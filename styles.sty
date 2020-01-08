@@ -1,0 +1,168 @@
+\ProvidesPackage{styles}
+
+\usepackage{fullpage}
+\usepackage{bookmark}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{hyperref} % for the URL
+\usepackage[shortlabels]{enumitem}
+\usepackage{mathtools}
+\usepackage{mathrsfs}
+\usepackage[most]{tcolorbox}
+\usepackage[amsmath,standard,thmmarks]{ntheorem} 
+\usepackage{physics}
+%\usepackage{tikz}
+\usepackage{float}
+
+\usetikzlibrary{graphs, graphs.standard}
+\usetikzlibrary{calc}
+%\usetikzlibrary{graphdrawing}
+%\usegdlibrary{layered}
+%\usegdlibrary{force}
+
+\setlist[enumerate]{topsep=1pt,itemsep=0pt,partopsep=1ex,parsep=1ex}
+
+% floor, ceiling, set
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\set}{\lbrace}{\rbrace}
+\DeclarePairedDelimiter{\iprod}{\langle}{\rangle}
+\DeclarePairedDelimiter{\card}{\lvert}{\rvert}
+
+\DeclareMathOperator{\Int}{int}
+\DeclareMathOperator{\bdy}{bdy}
+\DeclareMathOperator{\Lim}{Lim}
+\DeclareMathOperator{\mean}{mean}
+\DeclareMathOperator{\col}{col}
+\DeclareMathOperator{\proj}{proj}
+\DeclareMathOperator{\dual}{dual}
+\DeclareMathOperator{\opt}{opt}
+\DeclareMathOperator{\cone}{cone}
+\DeclareMathOperator{\conv}{conv}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\poly}{poly}
+\DeclareMathOperator{\odd}{odd}
+
+% commonly used sets
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\renewcommand{\P}{\mathcal{P}}
+
+% using modulo easily
+\newcommand{\nmod}[3]{$#1$ $\equiv$ $#2$ $(mod$ $#3)$}
+\newcommand{\residue}[4]{\{$#1$ $\in$ $\mathbb{#2}$: $1$ $\leq$ $#1$ $\leq$ $#3$, $gcd(#4,#3)=1$\}}
+
+\newcommand{\h}{\vec{h}}
+\newcommand{\p}{\vec{p}}
+\newcommand{\x}{\vec{x}}
+\newcommand{\y}{\vec{y}}
+\newcommand{\z}{\vec{z}}
+\renewcommand{\a}{\vec{a}}
+\renewcommand{\b}{\vec{b}}
+\renewcommand{\c}{\vec{c}}
+\renewcommand{\t}{\vec{t}}
+\renewcommand{\u}{\vec{u}}
+\renewcommand{\v}[1]{\vec{#1}}
+
+\newcommand{\sset}{\subseteq}
+\newcommand{\mcal}{\mathcal}
+\newcommand{\mscr}{\mathscr}
+
+\theoremstyle{break}
+\theorembodyfont{\upshape}
+
+\newtheorem{axm}{Axiom}[subsection]
+\tcolorboxenvironment{axm}{
+    enhanced jigsaw,
+    colframe=yellow,
+    colback=white!90!yellow,
+    drop fuzzy shadow east,
+    rightrule=2mm,
+    sharp corners,
+    before skip=10pt,
+    after skip=10pt,
+}
+
+\newtheorem{thm}{Theorem}[subsection]
+\tcolorboxenvironment{thm}{
+ %   enhanced jigsaw,
+    colframe=purple,
+    colback=white!90!purple,
+    drop fuzzy shadow east,
+    rightrule=2mm,
+    sharp corners,
+    before skip=10pt,
+    after skip=10pt,
+}
+
+\newtheorem{cor}{Corollary}[thm]
+\tcolorboxenvironment{cor}{
+    boxrule=0pt,
+    boxsep=0pt,
+    colback={White!90!RoyalPurple},
+    enhanced jigsaw,
+    borderline west={2pt}{0pt}{RoyalPurple},
+    sharp corners,
+    before skip=10pt,
+    after skip=10pt,
+    breakable
+}
+
+\newtheorem{lem}[thm]{Lemma}
+\tcolorboxenvironment{lem}{
+    enhanced jigsaw,
+    colframe=red,
+    colback={white!95!red},
+    rightrule=2mm,
+    sharp corners,
+    before skip=10pt,
+    after skip=10pt
+}
+
+\newtheorem{ex}[thm]{Example}
+\tcolorboxenvironment{ex}{% from ntheorem
+    breakable,
+    blanker,
+    left=5mm,
+    sharp corners,
+    before skip=10pt,
+    after skip=10pt,
+}
+
+\newtheorem*{pf}{Proof}
+\tcolorboxenvironment{pf}{% from ntheorem
+    colframe=red!70!white,
+    colback=white,
+    boxrule=-1pt,
+    leftrule=1mm,
+    sharp corners,
+    before skip=10pt,
+    after skip=10pt,
+}
+
+\newtheorem{defn}{Definition}[subsection]
+\tcolorboxenvironment{defn}{
+    colframe=blue,
+    colback=white!90!blue,
+    rightrule=2mm,
+    sharp corners,
+    before skip=10pt,
+    after skip=10pt,
+}
+
+\newtheorem{prop}[thm]{Proposition}
+\tcolorboxenvironment{prop}{
+    colframe=green!50!black,
+    colback=white!90!green,
+    rightrule=2mm,
+    sharp corners,
+    before skip=10pt,
+    after skip=10pt,
+}
+
+
+\setlength\parindent{0pt}
+\setlength{\parskip}{8pt}
