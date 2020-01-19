@@ -54,6 +54,8 @@
 % using modulo easily
 \newcommand{\nmod}[3]{$#1$ $\equiv$ $#2$ $(mod$ $#3)$}
 \newcommand{\residue}[4]{\{$#1$ $\in$ $\mathbb{#2}$: $1$ $\leq$ $#1$ $\leq$ $#3$, $gcd(#4,#3)=1$\}}
+\newcommand{\sspace}{\vspace{3mm} \\}
+\renewcommand{\qed}{$\hfill\blacksquare$}
 
 \newcommand{\h}{\vec{h}}
 \newcommand{\p}{\vec{p}}
@@ -100,15 +102,18 @@
 
 \newtheorem{cor}{Corollary}[thm]
 \tcolorboxenvironment{cor}{
-    boxrule=0pt,
-    boxsep=0pt,
+    %boxrule=0pt,
+    %boxsep=0pt,
+    colframe=RoyalPurple,
     colback={White!90!RoyalPurple},
-    enhanced jigsaw,
-    borderline west={2pt}{0pt}{RoyalPurple},
+    drop fuzzy shadow east,
+    rightrule=2mm,
+    %enhanced jigsaw,
+    %borderline east={2pt}{0pt}{RoyalPurple},
     sharp corners,
     before skip=10pt,
     after skip=10pt,
-    breakable
+    %breakable
 }
 
 \newtheorem{lem}[thm]{Lemma}
@@ -127,6 +132,17 @@
     breakable,
     blanker,
     left=5mm,
+    sharp corners,
+    before skip=10pt,
+    after skip=10pt,
+}
+
+\newtheorem*{ans}{Answer}
+\tcolorboxenvironment{ans}{
+    colframe=green!80!black,
+    colback=white,
+    boxrule=-1pt,
+    leftrule=1mm,
     sharp corners,
     before skip=10pt,
     after skip=10pt,

@@ -1,0 +1,168 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+
+\chapter{Euler's Formula}
+\section{Fermat's Little Theorem}
+\begin{defn}[Congruence]
+    Let $a,b,m \in \Z, m \in \N$. We say that $a$ is \textit{congruent} to $b$ modulo $m$, if $m \mid (b-a)$. We use the following notation: \\
+    \centerline{$a \equiv b$  $(mod$ $m)$}
+\end{defn}
+\begin{thm}
+    If $a,b,c \in \Z, m \in \N$ and $gcd(c,m)=1$, then, \\
+    \centerline{$a \cdot c \equiv b \cdot c$ $(mod$ $ m)$} \\
+    \centerline{$\implies a \equiv b$ $(mod$ $ m)$}
+\end{thm}
+\paragraph{Question:}
+Given $a \in \Z, m \in \N,$ find an integer $\gamma \in \N$, such that $a^\gamma \equiv 1$ $(mod$ $m)$
+\begin{thm}[Fermat's Little Theorem \textit{(FlT)}]
+    $\forall a, p \in \Z,$ prime $p$, $gcd(a,p)=1$ then, \\
+    \centerline{\nmod{a^{p-1}}{1}{p}}
+\end{thm}
+So part of the question is trivial with $FlT$, namely, when $m$ is prime then we can simply let $\gamma$ be $m-1$ and we've found a solution to the problem.
+
+Finding an integer $\gamma$ satisfying the equation for any integer $m$ however, is much more difficult.
+\begin{defn}[Reduced Residue Class Set]
+    Let $m \in \N$, we define the reduced residue class set as: \\
+    \centerline{$R_m = \{b \in \Z$: $1 \leq b \leq m$, $gcd(b,m)=1\}$}
+\end{defn}
+\paragraph{Example:}
+\begin{center}
+    The residue class set $R_p$ for a prime number $p$ is the following: \\
+    $R_p = \{1,2,3,4, ... , p-1\}$
+\end{center}
+Recall that the key step for proving $FlT$ is to see that: \\
+\centerline{\nmod{\{1,2,3,...,p-1\}}{\{a,2a,3a,...(p-1)a\}}{p} for $p \nmid a$.}
+
+\paragraph{Example: $a=3$, $p=5$}
+\begin{center}
+    $R_5=\{1,2,3,4\}$ \\
+    if we abuse notation, \\
+    $3 \cdot R_5 = \{3,6,9,12\}$ \\
+    notice that when we take the mod 5 of each element we get, \\
+    $3 \cdot R_5$ $mod$ $5$ $\equiv \{3,1,4,2\}$ \\
+    which is exactly $R_5$ in a different order
+\end{center}
+
+\section{Euler's Totient Function}
+\begin{defn}[Euler's Phi/Totient Function]
+    Let $m \in \N$. Define $\phi(m):=$ \# elements in $R_m$ \\
+    \centerline{$\phi(m)=$ \# elements in \residue{b}{Z}{m}{b}}
+\end{defn}
+
+\paragraph{Example 1: $\phi(p)=p-1$ \\}
+Since $R_p=\{1,2,3,...p-1\}$, there are $p-1$ elements in $R_p$
+
+\paragraph{Example 2: $\phi(p^k)=p^k-p^{k-1}$ \\}
+Constructing $R_{p^k}$, it's clear that there would be $p^k$ elements in the set if we were to include the values of $b$ which don't satisfy the condition that $gcd(b,p^k)=1$. The question now is how many values of $b$ are there which don't satisfy the condition? The only time $gcd(b,p^k) \neq 1$ is when $b \mid p^k$. Since $p$ is prime, this is also when $b$ is a multiple of $p$. There are exactly $p^{k-1}$ multiples of $p$, and so the value of Euler's Phi Function is $p^k - p^{k-1}$.
+
+\begin{thm}[Euler's Formula]
+    Let $a \in \Z$, $m \in \N$, $gcd(a,m)=1$. Then, \\
+    \centerline{\nmod{a^{\phi(m)}}{1}{m}.}
+\end{thm}
+\textbf{Remark:} By Euler's formula, we can see that when $m=p$ is prime then \nmod{a^{p-1}}{1}{p}, so $FlT$ is just a special case of Euler's formula.
+\begin{lem}
+    If $gcd(a,m)=1$, then the following sets are congruent in $mod$ $m$
+    \begin{center}
+        $a \cdot R_m = ab_1,ab_2,...,ab_{\phi{(m)}}$ \\
+        $R_m = b_1,b_2,...,b_{\phi{(m)}}$
+    \end{center}
+    In other words, \nmod{R_m}{a \cdot R_m}{m}
+\end{lem}
+\begin{pf}[Lemma 1.2.0.4]
+    It suffices to prove that any two numbers $ab_j,ab_j$ are congruent to $m$ if and only iff $i=j$, since this will show that $ab_1,...,ab_{\phi{(m)}}$ all have a different module $m$. \sspace
+    Suppose $ab_i=ab_j$ $(mod$ $m)$. Since $gcd(a,m)=1$, we can cancel out $a$, so \nmod{b_i}{b_j}{m}. But since $1 \leq b_i,b_j \leq m$, this implies that $i=j$. \sspace
+    Thus, we have that \nmod{R_m}{a \cdot R_m}{m}. \qed
+\end{pf}
+\begin{pf}[Euler's Formula]
+    By Lemma 1.2.0.4, we have that,
+    \begin{center}
+        \nmod{R_m}{a \cdot R_m}{m} \\
+        Suppose we have that, \\
+        $R_m=$ \residue{b}{Z}{m}{b} \\
+        $a \cdot R_m=$ \residue{a \cdot b}{Z}{m}{b} \\
+    \end{center}
+    Now consider what we get if we take the product of all terms in these sets. Notice that,
+    $$\prod_{b \in R_m} b \equiv \prod_{b \in R_m} a \cdot b \mod{m}$$ \\
+    Thus we have that,
+    $$\prod_{b \in R_m} b \equiv a^{\phi(m)} \cdot \prod_{b \in R_m} b \mod{m}$$ \\
+    and since $\forall$ $b \in R_m$, $gcd(b,m)=1$, we're able to cancel out the cartesian products and are left with the following:
+    \begin{center}
+        \nmod{1}{a^{\phi(m)}}{m}
+    \end{center}
+    \qed
+\end{pf}
+\paragraph{Example:}
+Compute the remainder of $5^{10000}$ divided by $9$
+\begin{center}
+    $gcd(5,9)=1$, so we use Euler's formula. \\
+    Notice that $\phi(9)=6$ \\
+    So, by Euler, \nmod{5^6}{1}{9} \\
+    Notice that $5^{10000}=(5^6)^{1666} \cdot 5^4$ \\
+    \nmod{5^{10000}}{1^{1666} \cdot 625}{9} \\
+    \nmod{5^{10000}}{4}{9} \\
+    So the remainder is 4.
+\end{center}
+To give some motivation for the next theorem, notice how in order to use Euler's formula, we need to determine $\phi(m)$, which of course becomes very difficult when $m$ gets large. So we need a trick to determining $\phi(m)$ for large $m$.
+\begin{thm}[Phi Function Theorem]
+    If $m,n \in \Z$ and $gcd(m,n)=1$, then we have that $\phi(m \cdot n) = \phi(m) \cdot \phi(n)$
+\end{thm}
+Using this theorem in conjunction with what we know about $\phi(p)$ and $\phi(p^k)$ for prime numbers $p$, we can calculate $\phi(m)$ for large $m$ values much faster by first putting $m$ in its prime factorized form, and then calculating $\phi$ for each base number in $m$, and then multiplying the values together.
+\paragraph{Example:}
+Compute $\phi(1000)$
+\begin{center}
+    $\phi(1000)=\phi(2^3 \cdot 5^3)$ \\
+    $=\phi(2^3) \cdot \phi(5^3)$ \\
+    $=(2^3-2^2) \cdot (5^3-5^2)$ \\
+    $=400$
+\end{center}
+\begin{pf}[Phi Function Theorem]
+    We need to show that $\phi(m \cdot n)=\phi(m) \cdot \phi(n)$ when $n,m \in \Z$ and $gcd(m,n)=1$. Recall that $\phi(m)$ is just the number of elements in the reduced residue set $R_m$. The proof is easier if we compare $R_{mn}$ to $R_m \cross R_n$.
+    \begin{center}
+        $R_{mn}=\{b \in \Z:$ $1 \leq b \leq m \cdot n,$ $gcd(b, m \cdot n)=1\}$ \\
+        $R_{m}=\{c \in \Z:$ $1 \leq c \leq m,$ $gcd(c, m)=1\}$ \\
+        $R_{n}=\{d \in \Z:$ $1 \leq d \leq n,$ $gcd(d,n)=1\}$ \\
+        $R_m \cross R_n=\{(c,d): c,d \in \Z,$ $1 \leq c \leq m,$ $1 \leq d \leq n,$ $gcd(c,m)=1,$ $gcd(d,n)=1\}$
+    \end{center}
+    We need to show that the size of $R_{mn}$ is equal to the size of $R_m \cross R_n$. If we can construct a bijection between these two sets, then that would imply that they are of equal size as required.
+    \sspace
+    Define a map:
+    \begin{center}
+        $f:$ $R_{mn}$ $\xrightarrow{}$ $R_m \cross R_n$ \\
+        $b \mapsto (c,d)$ \\
+        \nmod{c}{b}{m} \\
+        \nmod{d}{b}{n}
+    \end{center}
+\end{pf}
+\begin{pf}[Phi Function Theorem cont.]
+    Since $b$ is coprime to $m\cdot n$, $b$ is coprime to both $m$ and $n$, thus the mapping is well defined. The bijection is followed by the \textit{Chinese Remainder Theorem (CRT)}. \\
+    Since $CRT$ says that any
+    \[\begin{cases} 
+      $\nmod{x}{c}{m}$ \\
+      $\nmod{x}{d}{n}$
+   \end{cases}\]
+   has a \textit{unique} solution \nmod{x}{x_0}{m \cdot n}, then,
+   \[\begin{cases} 
+      $\nmod{x_0}{c}{m}$ \\
+      $\nmod{x_0}{d}{n}$
+   \end{cases}\]
+   So a bijection between the two sets exists, and thus we have the they are equal in size, as required. \qed
+\end{pf}
+
+\begin{cor}
+    $$\phi(m)=m \cdot \prod_{i=1}^{t}(1-\dfrac{1}{p_i})$$
+\end{cor}
+\paragraph{Example:}
+Compute $\phi(1000)$
+\begin{center}
+    $1000=2^3 \cdot 5^3$ \\
+    $\phi(1000) = 1000(1 - \dfrac{1}{2})(1 - \dfrac{1}{5})$ \\
+    $=400$
+\end{center}
+\begin{pf}[Corollary]
+    This result is found by dividing by the common factor of $p^k$ for each base number in the prime factorized form of $m$, since
+    $$\phi(m)=\prod_{i=1}^{t}(p^{k_i}-p^{k_i-1})$$
+    Where $i$ is the index of the current prime number in the prime factorized form of $m$. Simply rearranging this formula will give you the result of the corollary. \qed
+\end{pf}
+
+\end{document}
