@@ -1,0 +1,177 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+
+\chapter{Congruence Relations}
+
+\section{Successive Squaring algorithm}
+\paragraph{Question:}
+Compute the remainder $r$ of when $9^{53}$ is divided by $67$. In other words, solve for $r$ in \nmod{9^{53}}{r}{67}.
+\paragraph{Motivation:}
+Using theorems we know, such as the \textit{congruence power theorem} from MATH135, we are required to use $53$ as an exponent, which is far too large for us to compute. Thus, a better method is needed for computing these remainder problems for large exponents.
+\begin{thm}[Method of Successive Squaring To Compute $a^k$ $mod$ $m$]
+    \underline{Step 1:} Write $k$ as a sum of powers of 2 \\
+    \underline{Step 2:} Make a table of the powers of a modulo $m$ using successive squaring \\
+    Then, $$a^k \equiv \prod_{i=1}^{t} (A_i)^{u_i} \mod{m}$$
+\end{thm}
+
+Now that we have the resources to answer the question, lets go through the question.
+\paragraph{Question:}
+Compute the remainder $r$ of when $9^{53}$ is divided by $67$. In other words, solve for $r$ in \nmod{9^{53}}{r}{67}.
+
+\begin{ans}
+    \underline{Step 1:} (Write the exponent as a sum of powers of 2)
+    \begin{center}
+        $53 = 2^5 + 21$ \\
+        $53 = 2^5 + 2^4 + 2^2 + 2^0$
+    \end{center}
+    The largest exponent is $5$ in the rewritten number, and so for the next step, we will go up to $9^{2^5} = 9^{32}$ \sspace
+    \underline{Step 2:} (Create a table of the powers of $9$ modulo $67$)
+    \begin{center}
+        \begin{tabular}{c c c c}
+            $9^1\equiv$&9& &$\equiv 9 (mod$ $67)$ \\
+            $9^2\equiv$&81& &$\equiv 14 (mod$ $67)$ \\
+            $9^4\equiv$&$(14^2) \equiv$&196&$\equiv 62 (mod$ $67)$ \\
+            $9^8\equiv$&$(62^2) \equiv$&3844&$\equiv 25 (mod$ $67)$ \\
+            $9^{16}\equiv$&$(25^2) \equiv$&625&$\equiv 22 (mod$ $67)$ \\
+            $9^{32}\equiv$&$(22^2) \equiv$&484&$\equiv 15 (mod$ $67)$ \\
+        \end{tabular}
+    \end{center}
+    Notice that, 
+    \begin{center}
+        $9^{53} \equiv 9^{32} \cdot 9^{16} \cdot 9^{4} \cdot 9^{1}$ $(mod$ $67)$ \\
+        $9^{53} \equiv 15 \cdot 22 \cdot 62 \cdot 9$ $(mod$ $67)$ \\
+        $9^{53} \equiv 24$ $(mod$ $67)$
+    \end{center}
+    Thus we have that the remainder when $9^{53}$ is divided by $67$, is $24$. \qed
+\end{ans}
+
+
+\section{Bases in Congruence Relations}
+\paragraph{Question:}
+Let $k,m \in \N$, $b \in \Z$. Solve the congruence relation for $x$: \\
+\centerline{$x^k \equiv b$ $(mod$ $m)$}
+Note that so far we know how to solve for $k$ if we are given $x,b$ and $m$, but now we are looking to solve for $x$ when given $k,b$ and $m$. \sspace
+We can very easily solve it if $k=1$, so lets suppose $k>1$.
+\begin{thm}[Solving For x in Congruence Relations]
+    Let $b,k,m \in \Z$, $k \geq 1$, $m \geq 1$ such that we have that $gcd(b,m)=1$ and $gcd(k, \phi(m))=1$. Then, the following steps will give a solution to \\
+    \centerline{\nmod{x^k}{b}{m}}
+    \underline{Step 1:} Compute $\phi(m)$ \sspace
+    \underline{Step 2:} Find positive integers $u,v \in \N$ that satisfy $k \cdot u - \phi(m) \cdot v = 1$. Note: this step is from the linear diophantine equation theorem, which states that $a\cdot x + b \cdot y = c$ has a solution if $gcd(a,b) \mid c$. We can find solutions to this using the \textit{Euclidean Algorithm} \sspace
+    \underline{Step 3:} $x=b^u$ $(mod$ $m)$ is a solution to the relation
+\end{thm}
+
+\begin{pf}
+    It's enough to show that $x=b^u$ is a solution.
+    \begin{center}
+        $(b^u)^k = b^{ku} = b^{1+ \phi(m)v} = (b^{\phi(m)})^vb$
+    \end{center}
+    By Euler's formula, \nmod{b^{\phi(m)}}{1}{m}, so, \\
+    \centerline{$(b^u)^k \equiv 1^vb \equiv b$ $(mod$ $m)$}
+    So, $x=b^u$ is a solution to the equation. \qed
+\end{pf}
+\paragraph{Remark:} This theorem gives us a way to find the $k^{th}$ root of $b$ modulus $m$.
+
+\paragraph{Example:} Solve \nmod{x^{25}}{7}{135}.
+\begin{ans}
+    Notice that $gcd(7,135)=1$ and $gcd(25, \phi(135))=1$ \\
+    The conditions for our theorem are met, so we may use it. \sspace
+    We have the following linear diophantine equation: \\
+    \centerline{$25 \cdot u + 72 \cdot v = 1$}
+    Solved by \textit{E.Z.K}, gives $u=49, v=17$. \sspace
+    By our theorem, we have that $x=7^{49}$ is a solution. We can perform $7^{49}$ $(mod$ $135)$ to find a smaller solution to our equation using successive squaring. Since an example of successive squaring is given on the previous page, this will be skipped. The answer after successive squaring is $52$ (this is different than the answer given in class (88), but this is the correct answer), and so we know that \nmod{52^{25}}{7}{135}, as required.
+\end{ans}
+
+\paragraph{Example:} Solve \nmod{x^4}{7}{15}
+\begin{ans}
+    Notice that $gcd(7,15)=1$ and $gcd(4, \phi(15))=4 \neq 1$, so we cannot use our theorem. \sspace
+    We can, however, use the \textit{Splitting Module Theorem} from MATH 135. \\
+    By $SMT$, \nmod{x^4}{7}{15} if and only if \nmod{x^4}{7}{5} and \nmod{x^4}{7}{3}. \sspace
+    Consider \nmod{x^4}{7}{5}. \\
+    Notice that if $x$ is a solution, it must be coprime to $5$, since $gcd(5,7)=1$. So, by $FlT$, we have that \nmod{x^4}{1}{5}, however, \nmod{7}{2}{5}, which is a contradiction, and so \nmod{x^4}{7}{5} has no solution. \\
+    Thus, \nmod{x^4}{7}{15} has no solution by $SMT$.
+\end{ans}
+
+\section{Sums of Divisors with Phi}
+\paragraph{Question:} Let $n \in \N$, and $d_1,d_2,...,d_k$ be all positive divisors of $n$. What is the sum of $\phi(d_1) + \phi(d_2) + ... + \phi(d_k)$?
+\begin{ans}
+    The sum is equal to $n$. This will be proven as a theorem, but for now lets consider the summation when $n$ is prime. \sspace
+    Let $n=p$, where $p$ is prime. \\
+    $d_1=1$, $d_2=p$ are the only divisors by the properties of primes. Thus we have, \\
+    \centerline{$\phi(1) + \phi(p) = 1 + p-1 = p=n$}
+    
+    Let $n=p^k$, where $p$ is prime. \\
+    $d_1=1$, $d_2=p$, $d_3=p^2$, $...$, $d_k=p^k$ are the only divisors of n.
+    \begin{center}
+        $\phi(1)+\phi(p)+\phi(p^2)+...+\phi(p^k)$ \\
+        $=1+(p-1)+(p^2-p)+...+\phi(p^k-p^{k-1})$ \\
+        Notice the cancellation, \\
+        $=p^k=n$
+    \end{center}
+    We've shown that when $n$ is prime or has a prime base, the sum of Euler's phi function of the divisors of $n$ is equal to $n$. This will be helpful since every integer can be expressed as a product of primes.
+\end{ans}
+
+\begin{thm}[Euler's Phi Function Summation Formula]
+    For $n \in \N$ and $d \geq 1$,
+    $$\sum_{d \mid n}\phi(d)=n$$
+\end{thm}
+\begin{pf}
+    Let $F=\sum_{d \mid n}\phi(d)$. \sspace
+    If we can show for $m,n \in \N$, if $gcd(m,n)=1$, then $F(m\cdot n)=F(m)\cdot F(n)$, then we are done, since we can express any number as a product of primes, and we know that $F(p^K)=p^k$ for any prime $p$. \sspace
+    Let $m=p_1^{d_1}p_2^{d_2}...p_k^{d_k}$, and let $n=\gamma_1^{t_1}\gamma_2^{t_2}...\gamma_j^{t_j}$ \\
+    Notice how since $gcd(m,n)=1$, all $p_k$ are different from $\gamma_j$. By the \textit{Divisors From Prime Factorization Theorem}, any divisor $d$ of $m \cdot n$ has the form of a subset of the product of primes multiplied together, i.e, if we let $e=p_1^{\omega_1}p_2^{\omega_2}...p_l^{\omega_l}$ and $f=\gamma_1^{i_1}\gamma_2^{i_2}...\gamma_w^{i_w}$, where $e \mid m$ and $f \mid n$, then $d=e \cdot f$. \sspace
+    Thus, any divisor $d$ of $m \cdot n$ is a product of $e$ (a positive divisor of $m$) and $f$ (a positive divisor of $n$), where $gcd(e,f)=1$ since $gcd(m,n)=1$.
+\end{pf}
+\begin{pf}[cont.]
+     The converse of this is also true. If $e$ is a positive divisor of $m$, and $f$ is a positive divisor of $n$, then $e\cdot f$ is a positive divisor of $m \cdot n$, with $gcd(e,f)=1$. \sspace
+    To sum up what we have so far, let $\{e_1,e_2,...,e_s\}$ be the set of all positive divisors of $m$, and let $\{f_1,f_2,...,f_u\}$ be the set of all positive divisors of $n$. Then, $\{e_i\cdot f_j:1\leq i \leq s, 1 \leq j \leq u\}$ is the set of all positive divisors of $m\cdot n$. Notice that all $gcd(e_i,f_j)$ are coprime by definition.
+    $$F(m\cdot n)=\sum_{i=1}^s \sum_{f=1}^u \phi(e_i \cdot f_j)$$
+    $$=\sum_{i=1}^s \sum_{f=1}^u \phi(e_i) \cdot \phi(f_j$$
+    $$=\sum_{i=1}^s \phi(e_i) \cdot \sum_{f=1}^u \phi(f_j)$$
+    $$=F(m)\cdot F(n)$$ \qed
+\end{pf}
+
+\section{Primitive Roots Modulo p}
+\paragraph{Question:}
+Let $m \in \N$. For some $a \in Z$, where $gcd(a,m)=1$, what is the smallest positive integer $k$ such that \nmod{a^k}{1}{m}? \sspace
+We know by Euler that $k=\phi(m)$ is a solution to the equation, so we can say that the smallest integer $k$ always exists, and $k \leq \phi(m)$.
+
+\begin{defn}[Exponent of $a$ modulo $m$]
+    Let $a \in \Z$, $m \in \N$, where $gcd(a,m)=1$. The smallest exponent $e$ such that \nmod{a^e}{1}{m} is called the exponent of $a$ modulo $m$, and is denoted by $e_m(a)$. Note that $e_m(a) \leq \phi(m)$.
+\end{defn}
+
+\paragraph{Example:} Compute $e_7(5)$. i.e., find the smallest integer $e$ such that \nmod{5^e}{1}{7}.
+\begin{ans}
+    First, compute $\phi(7)=6$, so the possible values of $e_7(5)$ are between 1 and 6.
+    \begin{center}
+        $5^1 \equiv 5 \not\equiv 1$ $(mod$ 7) \\
+        $5^2 \equiv 25 \equiv 4$ $(mod$ 7) \\
+        $5^3 \equiv 4 \cdot 5 \equiv 6$ $(mod$ 7) \\
+        $5^4 \equiv 6\cdot 5 \equiv 2$ $(mod$ 7) \\
+        $5^5 \equiv 2\cdot5 \equiv 3$ $(mod$ 7) \\
+        $5^6 \equiv 3\cdot5 \equiv 1$ $(mod$ 7)
+    \end{center}
+    So, the smallest exponent $e$ which solves the congruence relation \nmod{5^e}{1}{7} is the maximum value it could have been, i.e, equal to $\phi(7)=6$.
+\end{ans}
+To give some motivation for the next proposition, notice how long it would take to calculate $e_m(a)$ for large values of $\phi(m)$. Surely, not all positive integers between 1 and $\phi(m)$ are possible values for $e$, so let's try to reduce the values from this range even further.
+\begin{prop}[Exponent Divisibility Property]
+    Let $a,m \in \Z$, with $gcd(a,m)=1$, and suppose there is a solution to the equation \nmod{a^n}{1}{m} for some $n\in \N$. Then, we have that $$e_m(a) \mid n$$ In particular, $$e_m(a) \mid \phi(m)$$
+\end{prop}
+\paragraph{Remark:} In our last example in which we calculated $e_7(5)$, we had to calculate the value of $5^n$ modulo 7 for all $1\leq n\leq \phi(7)$. If we can prove this proposition, we would have only needed to calculate the value of $5^n$ modulo 7 for the divisors of $\phi(7)$, so 1,2 and 3.
+
+\begin{pf}[Exponent Divisibility Property]
+    By definition, $a^{e_m(a)} \equiv 1$ $(mod$ m). Let $d = gcd(e_m(a), n)=e_m(a)$, since $e_m(a)$ is primitive. \sspace
+    By the \textit{Linear Diophantine Equation Theorem}, there exists two positive integers $u,v$ such that $e_m(a)\cdot u - n \cdot v = d$. Then, $a^{e_m(a)\cdot u}=(a^{e_m(a)})^u \equiv 1^u \equiv 1$ ($mod$ m) $$1 \equiv a^{e_m(a)\cdot u} = a^{n\cdot u + d} = (a^n)^u \cdot a^d \equiv 1^u \cdot a^d \equiv a^d \text{ (}mod \text{ m)}$$
+    But, by definition, $d=e_m(a)$, and so we have $e_m(a) \mid n$ as required. \qed
+\end{pf}
+\begin{defn}[Primitive Roots mod m]
+    Let $m \in \Z$ and let there exist a positive integer $e_m$ such that, for all $a \in \Z$ where $gcd(a,m)=1$, we have that $a^{e_m} \equiv 1$ $(mod$ $m)$, and $e_m$ is the smallest positive integer satisfying this property. \sspace
+    Then, a positive integer $g$ such that $gcd(g, m)=1$ is called the primitive root mod m if $e_m(g)=e_m$
+\end{defn}
+In particular, if $m=p$ for a prime $p$, $e_p=p-1$. A primitive root $g$ of $p$ satisfies $e_p(g)=p-1$.
+
+\begin{thm}
+    For any prime $p$, there exists a primitive root modulo $p$.
+\end{thm}
+
+\end{document}
