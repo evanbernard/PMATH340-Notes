@@ -1,0 +1,178 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+\chapter{Integer Points on a Circle}
+\section{$x^2+y^2=p$}
+The goal of this chapter is to develop tools to find integer solutions to the equation $x^2+y^2=n$, given some $n \in \Z$. Not unlike finding integer solutions to \smod{x}{a}{p}, we will be starting off by trying to find a function which determines if an integer solution exists. Let's first consider prime $n$ values.
+
+\begin{center}
+    \begin{tabular}{ c|c c c c c c c c c c } 
+        p & 2 & 3 & 5 & 7 & 11 & 13 & 17 & 19 & 23 & 29 \\
+        \hline
+        Solution & $1,1$ & No & $1,2$ & No & No & $2,3$ & $1,4$ & No & No & $2,5$ \\ 
+    \end{tabular}
+\end{center}
+We can see that there seems to be a pattern; $x^2+y^2=p$ has a solution when $p$ is congruent to 1 modulo 4, or $p=2$.
+\begin{thm}
+    $x^2+y^2=p$ for some prime $p$ has a solution if and only if $p=2$, or \nmod{p}{1}{4}.
+\end{thm}
+\begin{pf}
+    ($\implies$)
+    Assume that $x^2+y^2=p$ has an integer solution for some prime $p$. Note that when $p=2$, we are done, so we may assume $p$ is odd, and want to show that \nmod{p}{1}{4}.
+    \begin{center}
+        \nmod{x,y}{0,1,2,3}{4} \\
+        \nmod{x^2,y^2}{0,1}{4} \\
+        \nmod{x^2+y^2}{0,1,2}{4}
+    \end{center}
+    \underline{Case 1:} \nmod{x^2+y^2}{0}{4}. This implies that $p$ is divisible by 4 or is equal to 0, a contradiction. \\
+    \underline{Case 2:} \nmod{x^2+y^2}{1}{4}. We are done, since we have \nmod{p}{1}{4}. \\
+    \underline{Case 3:} \nmod{x^2+y^2}{2}{4}. This implies that $p=4k + 2$ for some $k \in \Z$, so $p=2(2k+1)$, so $p$ is even, meaning $p=2$.
+\end{pf}
+\begin{pf}[Cont.]
+    There another way of proving the forward direction, which goes as follows: \sspace ($\implies$)
+    Assume $x^2+y^2=p$ has a solution for some prime $p$. We may assume $p$ is an odd prime since $1^2+1^2=2$ is the only solution which gives $p=2$. Notice that we have $0 < x,y < p$, $\sqrt{p}$ is irrational for any prime $p$. Therefore, we have that $gcd(x,p)=gcd(y,p)=1$, and so taking the equation in modulo p,
+    \begin{center}
+        \nmod{x^2+y^2}{0}{p} \\
+        \nmod{x^2}{-y^2}{p} for some $x,y \in \Z$
+    \end{center}
+    This is equivalent to
+    \begin{center}
+        $\legendre{x^2}{p}=\legendre{-y^2}{p}=1$ \\
+        $\implies \legendre{-1}{p}\cdot\legendre{y^2}{p}=1$ by QR \\
+        $\implies \legendre{-1}{p}=1$ \\
+        $\implies$ \nmod{p}{1}{4} \\
+    \end{center}
+    So, we must have that $p$ is congruent to 1 mod 4 when we have a solution to $x^2+y^2=p$ for a prime $p$, as required. \sspace
+    ($\impliedby$)
+    Assume $p=2$ or \nmod{p}{1}{4}, we need to show that $x^2+y^2=p$ has integer solutions. If $p=2$, we have the solution of $x=y=1$, so we may assume that \nmod{p}{1}{4}. So, we have 
+    \begin{center}
+        $\legendre{-1}{p}=1$ \\
+        $\exists A \in \N$ s.t. \nmod{A^2}{-1}{p}, for $0 < A < p$ \\
+        \nmod{A^2+1^2}{0}{p} \\
+        $\exists M \in \N$ s.t. $A^2+1^2=Mp$, for $0 < M < p$
+    \end{center}
+    If $M=1$, then we have guaranteed a solution to $x^2+y^2=p$, namely $(x,y)=(A,1)$. So, we can use the \textit{Method Of Descent} to inductively reduce $M$ in the equation $A^2+1^2=Mp$ until $M=1$,  thus guaranteeing the existence of a solution to $x^2+y^2=p$. \qed
+\end{pf}
+
+\section{Method Of Descent}
+\begin{thm}[Method Of Descent (Euler, Fermat)]
+    Let $p$ be an odd prime. Assume that there exists $A,B,M \in \N$ where $1 < M$, and $0 < A,B,M < p$ such that $A^2+B^2=Mp$. Then, there exists $a,b,m \in \N$ where $0 < a,b,m < p$, and $m < M$ such that $a^2+b^2=mp$.
+\end{thm}
+The main idea behind the proof of this theorem (or, more accurately, algorithm), is the following identity:
+\begin{thm}
+    $(u^2+v^2)(A^2+B^2)=(uA+vB)^2+(vA-uB)^2$
+\end{thm}
+\begin{pf}
+    This can be easily seen by expanding both sides, but a more interesting proof comes from using complex numbers. Let $z=u+iv$ and $w=B+Ai$, noticing that $\N \subset \C$
+    \begin{center}
+        $\abs{zw}=\abs{z}\abs{w}$ \\
+        $\abs{zw}^2=\abs{z}^2\abs{w}^2$ \\
+        $\abs{(u+vi)(B+Ai)}^2=(uA+vB)^2(vA-uB)^2=(v^2+u^2)(A^2+B^2)$
+    \end{center}
+    as required. \qed
+\end{pf}
+
+\paragraph{Example:} Use the Method Of Descent to find a smaller value of $M$ where $A^2+B^2=Mp$ and $A=387$, $B=1$, $M=170$, $p=881$.
+\begin{ans}
+    We need to find some $a,b,m \in \N$ such that $a^2+b^2=mp$ where $m < M$ given the values above. \sspace
+    \begin{enumerate}
+        \item Write $387^2+1^2=170\cdot881$, notice that $0 < 170 < 881$
+        \item Chose numbers with \\
+            \begin{center}
+                \nmod{47}{387}{170} \\
+                \nmod{1}{1}{170} \\
+                notice $\tfrac{-170}{2} \leq 47,1 \leq \tfrac{170}{2}$
+            \end{center}
+            Then, we have \nmod{47\cdot1}{387\cdot1}{170}, and \nmod{47\cdot387+1\cdot1}{0}{170}, from the original equation
+        \item Observe that \\
+            \begin{center}
+                \nmod{47^2+1^2 \equiv 387^2+1^2}{0}{170}, so \\
+                $47^2+1^2=13\cdot170$ \\
+                $387^2+1^1=170\cdot881$
+            \end{center}
+    \end{enumerate}
+\end{ans}
+\begin{ans}
+    \begin{enumerate}
+    \setcounter{enumi}{3}
+        \item Now we can use the identity to get
+            \begin{center}
+                $(47^1+1^2)(387^2+1^2)=(13)(170^2)(881)$ \\
+                $=(47\cdot387+1\cdot1)^2+(387\cdot1-47\cdot1)^2$
+            \end{center}
+        \item Since \nmod{47\cdot387+1\cdot1 \equiv 387 \cdot 1 - 47\cdot1}{0}{170}, we can cancel out 170
+        $$(\tfrac{(47)(387)+(1)(1)}{170})^2+(\tfrac{(387)(1)-(47)(1)}{170})^2=13\cdot881$$ So, we have that $$107^2+2^2=13\cdot881$$ and $13 < 170$, as required.
+    \end{enumerate}
+\end{ans}
+Following similar steps as shown in this example, we can prove the Method of Descent for general equations $A^2+B^2=Mp$.
+\begin{pf}[Method of Descent]
+    Consider $A^2+B^2=Mp$ for a prime $p$, where $0 < A,B < p$, and $1 < M < p$. We can choose numbers $a,b$ such that 
+    \begin{center}
+        \nmod{a}{A}{M} \\
+        \nmod{b}{B}{M} \\
+        $\tfrac{M}{2} \leq a,b \leq \tfrac{M}{2}$
+    \end{center}
+    By the congruence properties, we have that
+    \begin{center}
+        \nmod{aB}{bA}{M} \\
+        \nmod{aA+bB \equiv A^2+B^2}{0}{M} \\
+        \nmod{a^2+b^2 \equiv A^2+B^2}{0}{M} \\
+        $\implies a^2+b^2=mM$ for some $m \in \Z$
+    \end{center}
+    Consider the product $(a^2+b^2)(A^2+B^2)$. By the identity, we have $(a^2+b^2)(A^2+B^2)=(aA+bB)^2+(aB-bA)^2=M^2mp$. Dividing by $M^2$, we get
+    \begin{center}
+        $(\tfrac{aA+bB}{M})^2+(\tfrac{aB-bA}{M})^2=mp$.
+    \end{center}
+    But \nmod{aA+bB}{0}{M}, so $\tfrac{aA+bB}{M}$ is an integer, and similarly, since \nmod{aB}{bA}{M}, $\tfrac{aB-bA}{M}$ is also an integer. Thus, we've found some $m$ which satisfies $a^2+b^2=mp$, so now we need to show that $m < M$ to finish the proof.
+    \begin{center}
+        $m = \tfrac{a^2+b^2}{M}$ \\
+        $\leq \tfrac{(\tfrac{M}{2})^2+(\tfrac{M}{2})^2}{M}$ by the range defined for $a,b$ \\
+        $=\tfrac{M}{2} < M$
+    \end{center}
+    So, $m$ satisfies the equation and is also strictly less than $M$, as required. \qed
+\end{pf}
+
+We've shown that the Method of Descent is valid, so our proof that there exists some integer solution to $x^2+y^2=p$ for a prime $p$ if and only if $p=2$ or \nmod{p}{1}{4} is sound. We will now focus on whether or not an integer solution exists to $x^2+y^2=n$ for some integer $n$, not necessarily prime.
+
+\section{$x^2+y^2=n$}
+Given a positive integer $n$, determine whether or not there exists some $a,b \in \Z$ such that $a^2+b^2=n$. Notice that we may assume that $gcd(a,b)=1$, since otherwise we are able to factor out the common divisor. \sspace
+Let $n$ be a positive integer of the form $n=p_1p_2...p_rM^2$ where $M$ is a positive integer and $p_1,...,p_r$ are distinct primes.
+
+\begin{thm}
+    Let $n \in \N$. 
+    \begin{enumerate}
+        \item We can factor $n$ into $n=p_1...p_rM^2m$, where $p_1,...,p_r$ are distinct primes which are either 2 or congruent to 1 modulo 4. Then, $n$ is a sum of squares.
+        \item $n$ can be written as $n=a^2+b^2$ for some $a,b \in \Z$ where $gcd(a,b)=1$ if and only if either
+        \begin{enumerate}
+             \item $n$ is odd and every prime divisor of $n$ is congruent to 1 modulo 4
+             \item $n$ us even and $\tfrac{n}{2}$ is odd and every prime divisor of $n$ is congruent to 1 modulo 4
+        \end{enumerate}
+    \end{enumerate}
+\end{thm}
+\begin{pf}
+    \underline{Proof of 1:} \\
+    We will prove this part via induction on $r$. The base case is that $r=0$, in which case we have that $n=M^2=M^2+0^2$, as required. We will assume that the statement holds for some $r=k$. Now consider $r=k+1$.
+    \begin{center}
+        $n=p_1...p_kM^2p_{k+1}$ \\
+        But $n/p_{k+1}$ can be written as $u^2+v^2$ by our hypothesis, \\
+        $n=(u^2+v^2)p_{k+1}$ \\
+        $p_{k+1}=A^2+B^2$ by assumption and the theorem for $x^2+y^2=p$ \\
+        $n=(u^2+v^2)(A^2+B^2)$ \\
+        $n=(uA+Bv)^2+(uB-vA)^2$
+    \end{center}
+    Thus, $n$ is the sum of squares, as required. \qed
+\end{pf}
+\begin{pf}[Cont.]
+    \underline{Proof of 2:} \\
+    $(\implies)$ Assume that $n=a^2+b^2$ for some $a,b \in \Z$, where $gcd(a,b)=1$. We have two cases. \\
+    \underline{Case 1:} $n$ is odd. \\
+    Then, we know that none of $p_1,...,p_r$ are equal to 2. We need to show that \nmod{p_i}{1}{4} for all $i$ in the range. We know that \nmod{n=a^2+b^2}{0}{p_i}, thus,
+    \begin{center}
+        \nmod{\legendre{a}{p_i}^2}{\legendre{-b}{p_i}^2}{p_i} \\
+        $\implies$ \nmod{1}{\legendre{-1}{p_i}}{p_i} \\
+        $\implies$ \nmod{p_i}{1}{4}
+    \end{center}
+    \underline{Case 2:} $n$ is even.
+    
+\end{pf}
+\end{document}
