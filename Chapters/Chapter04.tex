@@ -2,6 +2,7 @@
 \begin{document}
 
 \chapter{Squares Modulo P}
+\section{Quadratic Residues}
 \paragraph{Question:} Given a number $a$, and prime $p$, does the congruence \smod{x}{a}{p} have a solution?
 
 \paragraph{Example:} is 3 congruent to a perfect square modulo 11? ie. does \smod{x}{3}{11} have a solution?
@@ -90,7 +91,7 @@ It turns out that determining the solution of \smod{x}{a}{p} is very difficult, 
     \end{center}
     So, any NR $c$ times an NR in $B$ is in the set $A$, this is a QR, as required. \qed 
 \end{pf}
-
+\section{Legendre Symbol}
 \begin{defn}[Legendre Symbol]
     Let $p$ be an odd prime, and $gcd(a,p)=1$. The Legendre symbol of $a$ modulo $p$ is given by
     $$\bigg(\frac{a}{p}\bigg):= 
@@ -107,6 +108,297 @@ It turns out that determining the solution of \smod{x}{a}{p} is very difficult, 
     $$\bigg(\frac{ab}{p}\bigg) = \bigg(\frac{a}{p}\bigg) \bigg(\frac{b}{p}\bigg)$$
 \end{thm}
 \begin{pf}[Quadratic Residue Rules V2]
-    
+    Each case can be seen by the multiplication rules from Quadratic Residue Rules V1, and so will be omitted here.
 \end{pf}
+\paragraph{Examples:}
+\begin{center}
+    $\legendre{6}{11}=\legendre{2}{11}\legendre{3}{11}=(-1)(1)=-1$ \\
+    Thus, \smod{x}{6}{11} has no solutions. \\
+    $\legendre{24}{11}=\legendre{2^3}{11}\legendre{3}{11}=\legendre{2}{11}^2\legendre{3}{11}=(-1)^3(1)=-1$ \\
+    Thus, \smod{x}{24}{11} has no solution
+\end{center}
+What about when we have a negative $a$ value? ie. compute $\legendre{-5}{11}$
+\begin{center}
+    $\legendre{-5}{11}=\legendre{-1}{11}\legendre{5}{11}=?$
+\end{center}
+Lets try to find a pattern in the solutions to \smod{x}{-1}{p}, so we can determine if a negative $a$ value has a solution by factoring out the -1.
+\begin{center}
+    \begin{tabular}{ c|c c c c c c c c c c } 
+        p & 3 & 5 & 7 & 11 & 13 & 17 & 19 & 23 & 29 & 31 \\
+        \hline
+        $\legendre{-1}{p}$ & -1 & 1 & -1 & -1 & 1 & 1 & -1 & -1 & 1 & -1 \\ 
+    \end{tabular}
+\end{center}
+It seems as though $\legendre{-1}{p}=1$ when \nmod{p}{1}{4}, and $\legendre{-1}{p}=-1$ otherwise. Note that the only possible congruence value is 3, since $p$ is odd. This leads us to the following theorem, which we will prove with the help of Euler's Criterion.
+\begin{thm}[Quadratic Reciprocity Part 1]
+    Let $p$ be an odd prime.
+    $$\bigg(\frac{-1}{p}\bigg)= 
+    \begin{cases}
+      1:$ \nmod{p}{1}{4}$ \\
+      -1:$ \nmod{p}{3}{4}$
+   \end{cases}$$
+\end{thm}
+Before we can prove this, we first need Euler's Criterion.
+\section{Euler's Criterion}
+\begin{thm}[Euler's Criterion]
+    Let $p$ be an odd prime, and $a \not\equiv 0$ $(mod$ $p)$. Then, \\
+    \centerline{\nmod{a^{\tfrac{p-1}{2}}}{\legendre{a}{p}}{p}}
+\end{thm}
+\begin{pf}[Euler's Criterion]
+    We have 2 cases, when $a$ is a QR, and when $a$ is a NR. \sspace
+    \underline{Case 1:} Suppose $a$ is a QR. Then, by definition, \smod{b}{a}{p} for some $b \in \Z$, so $\legendre{a}{p}=1$. We have,
+    \begin{center}
+        $a^{\tfrac{p-1}{2}}$ \\
+        $\equiv (b^2)^{(p-1)/2}$ \\
+        $\equiv b^{p-1}$, so by $FlT,$ \\
+        \nmod{a^{\tfrac{p-1}{2}} \equiv 1}{\legendre{a}{p}}{p}
+    \end{center}
+    as required. \sspace
+    \underline{Case 2:} Suppose $a$ is a NR. Then, by definition, $\legendre{a}{p}=-1$. Consider the following, which will be denoted \\
+    \centerline{$(*)$: \nmod{x^{\tfrac{p-1}{2}}-1}{0}{p}}
+\end{pf}
+\begin{pf}[cont.]
+    We know by case 1 that $(*)$ is satisfied when $x$ is a QR, and we will now show that in fact, the only set of solutions to $(*)$ is the same as the set of integers in QR. We know that there are $\tfrac{p-1}{2}$ distinct elements in QR, so $(*)$ has \underline{at least} $\tfrac{p-1}{2}$ solutions. By a theorem proved earlier this term, since $(*)$ has degree $\tfrac{p-1}{2}$, there are \underline{at most} $\tfrac{p-1}{2}$ solutions. Thus, there are exactly $\tfrac{p-1}{2}$ solutions to $(*)$, and each solution is a QR. So, $a$ is a solution to $(*)$, if and only if $a$ is QR. \\
+    Let $a$ be a NR. By $FlT$, we have 
+    \begin{center}
+        \nmod{0}{a^{p-1}-1}{p} \\
+        \nmod{0}{(a^{\tfrac{p-1}{2}}-1)(a^{\tfrac{p-1}{2}}+1)}{p}
+    \end{center}
+    But, since $a$ is a NR, $a$ cannot be a solution to $(*)$ as we have shown, and so $(a^{\tfrac{p-1}{2}}-1)$ is not congruent to 0 modulo $p$, so we can freely divide both sides of the congruence relation
+    \begin{center}
+        \nmod{0}{a^{\tfrac{p-1}{2}}+1}{p} \\
+        \nmod{a^{\tfrac{p-1}{2}} \equiv -1}{\legendre{a}{p}}{p}
+    \end{center}
+     So, for every $a$, we have that \nmod{a^{\tfrac{p-1}{2}}}{\legendre{a}{p}}{p}, as required. \qed
+\end{pf}
+
+\begin{pf}[Quadratic Reciprocity Part 1]
+    By Euler's criterion, we have \\
+    \centerline{\nmod{\legendre{-1}{p}}{(-1)^{\tfrac{p-1}{2}}}{p}} We have two cases, one where Legendre's symbol evaluates to 1 and another which evaluates to -1. \\
+    \underline{Case 1:} $\legendre{-1}{p}=-1$, then we must have that $(p-1)/2$ is odd
+    \begin{center}
+        $(p-1)/2=2k+1$ for some $k \in \Z$ \\
+        $p-1=4k+2$ \\
+        $p=4k + 3$
+    \end{center}
+    So, if $p$ is congruent to 3 modulo 4, then $\legendre{-1}{p}=-1$ \sspace
+    \underline{Case 2:} $\legendre{-1}{p}=1$, then we must have that $(p-1)/2$ is even, and by a similar argument, we get that $p$ must be congruent to 1 modulo 4, as required. \qed
+\end{pf}
+Now that we are able to calculate Legendre's Symbol for a numerator of -1 and we know that it is closed under multiplication, we should try to find a way to calculate it for prime numerators, that way we can take any integer and factor it into a workable equation.
+\paragraph{Question:} What is $\legendre{q}{p}$ when $q$ is prime?
+Let's first check the case where $q=2$.
+\begin{thm}[Quadratic Reciprocity Part 2]
+    Let $p$ be an odd prime. Then,
+    $$\bigg(\frac{2}{p}\bigg)= 
+    \begin{cases}
+      1:$ \nmod{p}{1,7}{8}$ \\
+      -1:$ \nmod{p}{3,5}{8}$
+   \end{cases}$$
+\end{thm}
+\paragraph{Example:} Compute $\legendre{2}{11}$. We know that \nmod{11}{3}{8}, thus, $\legendre{2}{11}=-1$
+Notice that if we multiply the set of integers between 1 and $\tfrac{p-1}{2}$ by 2, we get $\{2,4,6,8,10\}$, and if we reduce the numbers greater than $\tfrac{p-1}{2}$ in modulo 11, we get the set $\{2,4,-5,-3, -1\}$, which is the same as our original set, with some elements negated and in a different order. So, we can get that 
+\begin{center}
+    $(2\cdot1)(2\cdot2)(2\cdot3)(2\cdot4)(2\cdot5) \equiv 2\cdot4\cdot-5\cdot-3\cdot-1$ $(mod$ $11)$ \\
+    $2^{(11-1)/2}\cdot 5! \equiv (-1)^3\cdot5!$ \\
+    $2^{(11-1)/2} \equiv (-1)^3$
+\end{center}
+\begin{thm}[Gauss' Lemma]
+    Let $p$ be an odd prime, $a \in \Z$, and $a \not\equiv 0$ $(mod$ $p)$. Take the numbers $a,2a,3a,...,\tfrac{p-1}{2}a$ and reduce each of them modulo $p$ to get a number lying between $\tfrac{-(p-1)}{2}$ and $\tfrac{p-1}{2}$. If $s$ is the number of resulting numbers less than 0, then we have \\
+    \centerline{$\legendre{a}{p}=(-1)^s$}
+\end{thm}
+
+\begin{pf}[Gauss' Lemma]
+    For $1 \leq i \leq \tfrac{p-1}{2}$, let \nmod{ia}{ui}{p} such that $\tfrac{-(p-1)}{2} \leq ui \leq \tfrac{p-1}{2}$. Note that $s$ is the number of elements $u_1,u_2,...u_{(p-1)/2}$ which are less than 0. \sspace
+    Claim: $\{\abs{u_1},\abs{u_2},...,\abs{u_{(p-1)/2}}\}=\{1,2,...,\tfrac{p-1}{2}\}$ \\
+    Proof of claim: It is sufficient to show that no two elements in the set $\{\abs{u_1},\abs{u_2},...,\abs{u_{(p-1)/2}}\}$ are the same. Thus, we need to show that if $u_i=\pm u_j$ then $i=j$. \\
+    \underline{Case 1:} $u_i=u_j$, then $ia \equiv u_j \equiv u_i \equiv ja$ $(mod$ $p)$ by definition, and since $gcd(a,p)=1$, we have \nmod{i}{j}{p}, which implies $i=j$ because of the range of $i$ and $j$. \\
+    \underline{Claim 2:} $u_i=-u_j$, then,
+    \begin{center}
+        \nmod{ia}{u_i}{p} \\
+        \nmod{ja}{-u_i}{p} \\
+        Adding these equations together, we get that \\
+        \nmod{(i+j)a}{0}{p} \\
+        \nmod{i+j}{0}{p}
+    \end{center}
+\end{pf}
+\begin{pf}[cont.]
+    But, we have that $1 \leq i,j \leq \tfrac{p-1}{2}$, so we can't have that they are congruent to 0 modulo p, a contradiction. Thus, we only have to worry about case 1, which implies $i=j$, as required. \sspace
+    So, we have the following:
+    \begin{center}
+        $a\cdot2a\cdot3a...\cdot\tfrac{p-1}{2}a \equiv u_1\cdot u_2...\cdot u_{\tfrac{p-1}{2}}$ $(mod$ $p)$ \\
+        $a^{\tfrac{p-1}{2}}(\tfrac{p-1}{2})! \equiv (-1)^s\cdot \tfrac{p-1}{2}!$ $(mod$ $p)$ \\
+        $a^{\tfrac{p-1}{2}} \equiv \legendre{a}{p} \equiv (-1)^s$ $(mod$ $p)$
+    \end{center}
+    As required. \qed
+\end{pf}
+
+Now we have the ability to prove Quadratic Reciprocity Part 2, and we will do so by comparing our results from Gauss' Lemma for different values of $p$ modulo 8.
+
+\begin{pf}[Quadratic Reciprocity Part 2]
+    By Gauss' Lemma, we need to count the number of negative elements in the set \\
+    \centerline{$\{2\cdot1, 2\cdot2, 2\cdot3,...,2\cdot \tfrac{p-1}{2}\}$} \\
+    In other words, we need to count the number of elements in the set which are larger than $\tfrac{p}{2}$. Consider $2j$ for some $1 \leq j \leq \tfrac{p-1}{2}$. $j$ is less than $\tfrac{p}{2}$ exactly when $j \leq \tfrac{p}{4}$. Hence, there are exactly $\floor{\tfrac{p}{4}}$ many integers in the set. So we have that $s=\tfrac{p-1}{2}-\floor{\tfrac{p}{4}}$. Thus, by Gauss, we have the following: \\
+    \begin{center}
+        $\legendre{2}{p} = (-1)^{\tfrac{p-1}{2}-\floor{\tfrac{p}{4}}}$
+    \end{center}
+    \underline{Case 1:} \nmod{p}{\pm1}{8}, then we have that $p=8k\pm1$, for some a$k \in \Z$.
+    Plugging in our value for $p$, we get that $\tfrac{p-1}{2}-\floor{\tfrac{p}{4}}$ is an even integer, thus we have $\legendre{2}{p}=1$ when \nmod{p}{\pm1}{8}. \\
+    \underline{Case 2:} \nmod{p}{\pm3}{8}, we follow similar steps as above to find that $s$ will end up be an odd integer, thus $\legendre{2}{p}=-1$, as required. \qed
+\end{pf}
+
+Doing a similar calculation, we can easily see that when \nmod{p}{\pm 1}{8}, $(-1)^{\tfrac{p^2-1}{8}}=1$, and when \nmod{p}{\pm3}{8}, $(-1)^{\tfrac{p^2-1}{8}}=-1$, as required. \sspace
+To summarize what we have done so far, we have
+$$\bigg(\frac{-1}{p}\bigg)= 
+    \begin{cases}
+      1:$ \nmod{p}{1}{4}$ \\
+      -1:$ \nmod{p}{3}{4}$
+   \end{cases}$$
+$$\bigg(\frac{2}{p}\bigg)= 
+    \begin{cases}
+      1:$ \nmod{p}{\pm1}{8}$ \\
+      -1:$ \nmod{p}{\pm3}{8}$
+   \end{cases}$$
+
+We would like to have a way to calculate $\legendre{q}{p}$ for any $q$, and we can do so by splitting $q$ into it's prime factors, so we'll need to compute the result for odd primes $q$.
+
+\section{Quadratic Reciprocity}
+\begin{thm}[Quadratic Reciprocity]
+    Let $p,q$ be distinct odd primes
+    $$\bigg(\frac{q}{p}\bigg)=\bigg(\frac{p}{q}\bigg)\cdot(-1)^{\tfrac{p-1}{2}\cdot \tfrac{q-1}{2}}$$
+\end{thm}
+\paragraph{Example:} Compute $\legendre{90}{101}$. \\
+\begin{center}
+    $\legendre{90}{101}=\legendre{2}{101}\legendre{3^2}{101}\legendre{5}{101}$ \\
+    \nmod{101}{5}{8}, so $\legendre{2}{101}=-1$ \\
+    Clearly, 3 is a solution for \smod{x}{3^2}{101}, so $\legendre{3^2}{101}=1$ \\
+    $\legendre{90}{101}=-\legendre{5}{101}$ \\
+    By quadratic reciprocity, \\
+    $=-\legendre{101}{5}\cdot(-1)^{\tfrac{101-1}{2}\cdot \tfrac{5-1}{2}}$ \\
+    $=-\legendre{1}{5}\cdot1$ \\
+    $\legendre{90}{101}=-1$
+\end{center}
+Before we can try to prove Quadratic Reciprocity, we will need a lemma.
+
+\begin{lem}
+    Let $p$ be an odd prime, and $a$ an odd integer where $a \not\equiv 0$ $(mod$ $p)$. Then, we have
+    $$\bigg(\frac{a}{p}\bigg)=(-1)^{T(a,p)}$$ where $T(a,p)$ is defined by $$T(a,p)= \sum_{j=1}^{\tfrac{p-1}{2}}\floor{\tfrac{ja}{p}}$$
+\end{lem}
+\begin{pf}[Of Lemma]
+    Let $1 \leq j \leq \tfrac{p-1}{2}$. we have
+    $$(*): ja=p\floor{\tfrac{ja}{p}}+r_j$$ for $0 \leq r_j \leq p-1$, by the division algorithm. Let $u_j$ be the number between $\tfrac{-(p-1}{2}$ and $\tfrac{p-1}{2}$ such that \nmod{ja}{u_j}{p}. Then, we have
+    \begin{center}
+        $r_j=u_j$ if $0 \leq r_j \leq \tfrac{p-1}{2}$ \\
+        $r_j=p+u_j$ if $\tfrac{p-1}{2} \leq p-1$
+    \end{center}
+    Let $s$ be the number of $u_j$ which are less than 0, and let $t$ be the number of $u_j$ which are greater than 0. We can then re-index $r_j$ and $u_j$ 
+    \begin{center}
+        let $u_1,...,u_s$ be the $u$ which are less than 0, \\
+        and $u_{s+1},...,u_{s+t}$ be the $u$ which are greater than 0
+    \end{center}
+    Summing $(*)$ for all $1 \leq j \leq \tfrac{p-1}{2}$, we have
+    $$(1): \sum_{j=1}^{\tfrac{p-1}{2}}ja=p\cdot \Bigg(\sum_{j=1}^{\tfrac{p-1}{2}}\floor{\dfrac{ja}{p}}\Bigg) + \Bigg(\sum_{j=1}^{s}(p+u_j)\Bigg)+\Bigg(\sum_{j=1}^{t}u_{j+s}\Bigg)$$
+    But, we know from the proof in the previous section that $$\{\abs{u_1},\abs{u_2},...,\abs{u_{(p-1)/2}}\}=\{1,2,...,\tfrac{p-1}{2}\}$$ and thus we have
+    $$(2): \sum_{j=1}^{\tfrac{p-1}{2}}j=\sum_{j=1}^{s}-u_j+\sum_{i=1}^{t}u_{s+i}$$
+    So, if we take $(1)-(2)$, we get
+    $$(a-1)\cdot \Bigg(\sum_{j=1}^{\tfrac{p-1}{2}}j\Bigg)=\sum_{j=1}^{s}(p+2u_j)+p\cdot T(a,p)$$ \\
+    Taking this equation in modulo 2, it reduces to
+    $$0 \equiv s+T(a,p)\text{ (}mod\text{ }2)$$
+    $$\implies T(a,p) \equiv s\text{ }(mod\text{ }2)$$ So finally, we get $$(-1)^s=(-1)^{T(a,p)}$$ as required. \qed
+\end{pf}
+\newpage
+
+So far we have proved a lemma which will be useful in the proving of quadratic reciprocity. Lets use what we've proved in an example
+\paragraph{Example:} Compute $\legendre{11}{7}$
+\begin{ans}
+    We will need to calculate $T(11,7)$ and use the lemma
+    \begin{center}
+        $T(11,7)=\sum_{j=1}^{\tfrac{7-1}{2}}\floor{\tfrac{11j}{7}}=\floor{\tfrac{11}{7}}+\floor{\tfrac{22}{7}}+\floor{\tfrac{33}{7}}$ \\
+        $T(11,7)=1+3+4=8$ \\
+        Using the lemma, we get \\
+        $\legendre{11}{7}=(-1)^8=1$
+    \end{center}
+\end{ans}
+\paragraph{Example:} Compute $\legendre{7}{11}$
+\begin{ans}
+    We will need to calculate $T(7,11)$ and use the lemma
+    \begin{center}
+        $T(7, 11)=\sum_{j=1}^{\tfrac{11-1}{2}}\floor{\tfrac{7j}{11}}=\floor{\tfrac{7}{11}}+\floor{\tfrac{14}{11}}+\floor{\tfrac{21}{11}}+\floor{\tfrac{28}{11}}+\floor{\tfrac{35}{11}}$ \\
+        $T(7, 11)=0+1+1+2+3=7$ \\
+        Using the lemma, we get \\
+        $\legendre{7}{11}=(-1)^7=-1$
+    \end{center}
+\end{ans}
+\paragraph{Observation:} We can see that $8+7=15=3\cdot5=\tfrac{7-1}{2}\cdot \tfrac{11-1}{2}$. In other words, we have that $T(11,7)+T(7,11)=\tfrac{7-1}{2}\cdot \tfrac{11-1}{2}$ \sspace
+Notice that if we take the equation of a line $11x=7y$, it turns out that $T(11,7)$ is equal to the number of integral points to the right of the line, as can be seen easier by $1+3+4$, 1 is the number of integral points under $x=1$, 3 is the number of integral points under $x=2$, and 4 is the number of integral points under $x=3$. This can be seen by drawing a graph with the line $11x=7y$. This observation is the key to proving quadratic reciprocity. Which we will now do.
+
+\begin{pf}[Quadratic Reciprocity]
+    Compute $\legendre{q}{p}$.
+    \begin{center}
+        $T(q,p)=\sum_{j=1}^{\tfrac{p-1}{2}} \floor{\tfrac{jq}{p}}$ and $T(p,q)=\sum_{j=1}^{\tfrac{q-1}{2}} \floor{\tfrac{jp}{q}}$
+    \end{center}
+    Now consider the line $qx=py$, and the integral points to the rights of  the line, where $1 \leq x \leq \tfrac{p-1}{2}$ and $1 \leq y \leq \tfrac{q-1}{2}$. Notice that there are a total of $\tfrac{p-1}{2}\cdot \tfrac{q-1}{2}$ integral points in the rectangle bounded by the line and the range. We will be arguing that every integral point is in exactly one of $T(q,p)$ or $T(p,q)$, thus proving that their sum is equal to $\tfrac{p-1}{2} \cdot \tfrac{q-1}{2}$. \sspace
+    There are $\floor{\tfrac{qj}{p}}$ many integral points to the right of the line in the range with $j$ being the $x$ coordinate. So, summing for all $j=x$ in the range, we get $\sum_{j=1}^{\tfrac{p-1}{2}}\floor{\tfrac{qj}{p}}$ which is equal to $T(q,p)$. Similarly, there are $\floor{\tfrac{pj}{q}}$ many integral points to the left of the line for all $j=y$ in the range, which is equal to $T(p,q)$. \sspace
+    Thus, we have that every point is in one of $T(q,p)$ or $T(p,q)$, proving that $$T(q,p)+T(p,q)=\tfrac{p-1}{2} \cdot \tfrac{q-1}{2}$$ If we take (-1) as the base, we then get 
+    $$(-1)^{T(q,p) + T(p,q)}=(-1)^{\tfrac{q-1}{2} \cdot \tfrac{p-1}{2}}$$ Following the result of the lemma previously proven, we get this is equal to
+    $$\legendre{p}{q}\cdot \legendre{q}{p}=(-1)^{\tfrac{p-1}{2}\cdot \tfrac{q-1}{2}}$$ And notice that this is an equivalent way of writing Quadratic Reciprocity. \qed
+\end{pf}
+
+\paragraph{Example:} Compute $\legendre{713}{1009}$
+\begin{ans}
+    First, notice that 1009 is prime, and so we are free to use the theorems we've just proven. We can factor 713 into two primes $713=23 \cdot 31$
+    \begin{center}
+        $\legendre{713}{1009}=\legendre{23}{1009}\cdot\legendre{31}{1009}$ and by QR,\\
+        $\legendre{713}{1009}=\legendre{1009}{23}\cdot(-1)^{504 \cdot 11} \cdot \legendre{1009}{31} \cdot (-1)^{504 \cdot 15}$ \\
+        $\legendre{713}{1009}=\legendre{1009}{23} \cdot \legendre{1009}{31}$ \\
+        $\legendre{713}{1009}=\legendre{20}{23} \cdot \legendre{17}{31}$ \\
+        $\legendre{713}{1009}=\legendre{2^2}{23}\cdot\legendre{5}{23}\cdot\legendre{17}{31}$
+    \end{center}
+\end{ans}
+
+\begin{ans}[cont.]
+    Notice that $\legendre{2^2}{23}=1$
+    \begin{center}
+        $\legendre{713}{1009}=\legendre{5}{23}\cdot \legendre{17}{31}$ \\
+        $\legendre{713}{1009}=\legendre{23}{5} \cdot \legendre{31}{17}$ by QR \\
+        $\legendre{713}{1009}=\legendre{3}{5}\cdot\legendre{14}{17}$ \\
+        Notice that $\legendre{3}{5}=\legendre{5}{3}=\legendre{2}{3}=-1$ by QR part 2 \\
+        $\legendre{713}{1009}=-1\cdot\legendre{2}{17}\cdot\legendre{7}{17}$ \\
+        Notice that $\legendre{2}{17}=1$ since \nmod{17}{1}{8} by QR part 2 \\
+        $\legendre{713}{1009}=-1\cdot\legendre{17}{7}=-1\cdot\legendre{3}{7}$ \\
+        $\legendre{713}{1009}=-1\cdot\legendre{7}{3}\cdot(-1)^3=-1\cdot-1\cdot\legendre{1}{3}$ \\
+        $\legendre{713}{1009}=\legendre{1}{3}=1$
+    \end{center}
+\end{ans}
+
+\begin{defn}[Jacobi Symbol]
+    Let $n \geq 3$ be an odd integer, $a \in \Z$, such that $gcd(a,n)=1$, and let $n$ have a prime decomposition $n = p_1^{\delta_1}p_2^{\delta_2}...p_k^{\delta_k}$. Then, we define the Jacobi symbol as $$\legendre{a}{n}=\legendre{a}{p_1}^{\delta_1}\legendre{a}{p_2}^{\delta_2}\cdot\cdot\cdot\legendre{a}{p_k}^{\delta_k}$$ Where each of $\legendre{a}{p_i}$ is a legendre symbol.
+\end{defn}
+
+\paragraph{Remark:} Notice how when $n$ is prime, we have that the Jacobi symbol is equal to the legendre symbol. The Jacobi symbol $\legendre{a}{n}$ being equal to 1 does \textbf{not} mean \smod{x}{a}{n} has an integer solution, unlike the legendre symbol.
+
+\begin{thm}[Jacobi Symbol Theorem]
+    Let $m,n \geq 3$ be odd integers, and $a,b \in \Z$ such that $gcd(a,n)=gcd(b,n)=gcd(m,n)=1$. Then we have the following:
+    \begin{enumerate}
+        \item If \nmod{a}{b}{n}, then we have $\legendre{a}{n}=\legendre{b}{n}$
+        \item $\legendre{ab}{n}=\legendre{a}{n}\legendre{b}{n}$
+        \item $\legendre{-1}{n}=(-1)^{\tfrac{n-1}{2}}$
+        \item $\legendre{2}{n}=(-1)^{\tfrac{n^2-1}{8}}$
+        \item $\legendre{n}{m}\legendre{m}{n}=(-1)^{\tfrac{m-1}{2}\cdot\tfrac{n-1}{2}}$
+    \end{enumerate}
+\end{thm}
+
+Most of these items can be proven directly from rules we have derived about the legendre symbols, and so will be omitted.
+
+\paragraph{Example:} Compute $\legendre{37603}{48611}$, note that 48611 is prime.
+\begin{ans}
+    Since 48611 is prime, the Jacobi symbol is equal to the legendre symbol.
+    \begin{center}
+        $\legendre{37603}{48611}=\legendre{48611}{37603}\cdot(-1)^{\tfrac{48611-1}{2}\cdot\tfrac{37603-1}{2}}$ \\
+        $=-\legendre{11008}{37603}=-\legendre{2^8\cdot43}{37603}=-\legendre{43}{37603}$ \\
+        $=-\legendre{37603}{43}\cdot(-1)^{\tfrac{37603-1}{2}\cdot\tfrac{43-1}{2}}$ \\
+        $=\legendre{21}{43}=\legendre{43}{21}\cdot(-1)^{\tfrac{21-1}{2}\cdot\tfrac{43-1}{2}}$ \\
+        $=\legendre{1}{21}=1$
+    \end{center}
+\end{ans}
+
 \end{document}

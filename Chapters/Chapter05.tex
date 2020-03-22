@@ -74,21 +74,21 @@ The main idea behind the proof of this theorem (or, more accurately, algorithm),
 
 \paragraph{Example:} Use the Method Of Descent to find a smaller value of $M$ where $A^2+B^2=Mp$ and $A=387$, $B=1$, $M=170$, $p=881$.
 \begin{ans}
-    We need to find some $a,b,m \in \N$ such that $a^2+b^2=mp$ where $m < M$ given the values above. \sspace
+    We need to find some $a,b,m \in \N$ such that $a^2+b^2=mp$ where $m < M$ given the values above.
     \begin{enumerate}
         \item Write $387^2+1^2=170\cdot881$, notice that $0 < 170 < 881$
-        \item Chose numbers with \\
+        \item Chose numbers with
             \begin{center}
                 \nmod{47}{387}{170} \\
                 \nmod{1}{1}{170} \\
                 notice $\tfrac{-170}{2} \leq 47,1 \leq \tfrac{170}{2}$
             \end{center}
             Then, we have \nmod{47\cdot1}{387\cdot1}{170}, and \nmod{47\cdot387+1\cdot1}{0}{170}, from the original equation
-        \item Observe that \\
+        \item Observe that
             \begin{center}
                 \nmod{47^2+1^2 \equiv 387^2+1^2}{0}{170}, so \\
                 $47^2+1^2=13\cdot170$ \\
-                $387^2+1^1=170\cdot881$
+                $387^2+1^1=881\cdot170$
             \end{center}
     \end{enumerate}
 \end{ans}
@@ -97,7 +97,7 @@ The main idea behind the proof of this theorem (or, more accurately, algorithm),
     \setcounter{enumi}{3}
         \item Now we can use the identity to get
             \begin{center}
-                $(47^1+1^2)(387^2+1^2)=(13)(170^2)(881)$ \\
+                $(47^2+1^2)(387^2+1^2)=(13)(170^2)(881)$ \\
                 $=(47\cdot387+1\cdot1)^2+(387\cdot1-47\cdot1)^2$
             \end{center}
         \item Since \nmod{47\cdot387+1\cdot1 \equiv 387 \cdot 1 - 47\cdot1}{0}{170}, we can cancel out 170
@@ -145,7 +145,7 @@ Let $n$ be a positive integer of the form $n=p_1p_2...p_rM^2$ where $M$ is a pos
         \item $n$ can be written as $n=a^2+b^2$ for some $a,b \in \Z$ where $gcd(a,b)=1$ if and only if either
         \begin{enumerate}
              \item $n$ is odd and every prime divisor of $n$ is congruent to 1 modulo 4
-             \item $n$ us even and $\tfrac{n}{2}$ is odd and every prime divisor of $n$ is congruent to 1 modulo 4
+             \item $n$ is even and $\tfrac{n}{2}$ is odd and every prime divisor of $\tfrac{n}{2}$ is congruent to 1 modulo 4
         \end{enumerate}
     \end{enumerate}
 \end{thm}
@@ -172,7 +172,23 @@ Let $n$ be a positive integer of the form $n=p_1p_2...p_rM^2$ where $M$ is a pos
         $\implies$ \nmod{1}{\legendre{-1}{p_i}}{p_i} \\
         $\implies$ \nmod{p_i}{1}{4}
     \end{center}
-    \underline{Case 2:} $n$ is even.
+    \underline{Case 2:} $n$ is even. \\ 
+    Then we may write $n=2k=a^2+b^2$ for some $k \in \Z$. Taking this equality in modulo 2, we get that either \nmod{a,b}{1}{2} or \nmod{a,b}{0}{2}, since otherwise $n$ wouldn't be even. Thus, we may write
+    \begin{center}
+        $a=2u+1$ \\
+        $b=2v+1$ for some $u,v \in \Z$ \\
+        $n=a^2+b^2=(2u+1)^2+(2v+1)^2$ \\
+        $n=4(u^2+u+v^2+v)+2$
+    \end{center}
+    So, 4 does not divide $n$, so $\tfrac{n}{2}$ is odd, and every prime divisor of n is congruent to 1 modulo 4, as required. \\
+    $(\impliedby)$ Assume each prime divisor of $n$ is congruent to 1 modulo 4. Then, by the theorem proved earlier in the chapter, we may write $n$ as the sum of squares. \qed
+    \end{pf}
     
+\begin{thm}[Pythagorean Hypotenuse Proposition]
+    A number $c$ appears as the hypotenuse of a primitive Pythagorean triple $(a,b,c)$, where $a$ is odd, $b$ is even and $c$ is odd, if and only if $c$ is a product of odd primes \nmod{p}{1}{4}
+\end{thm}
+\begin{pf}
+    We know that $a^2+b^2=c$, $gcd(a,b)=1$, and $c$ is odd by our work in the first chapter. Thus, $c^2$ must be a product of primes congruent to 1 modulo 4, similarly for $c$. The converse is also clear. \qed
 \end{pf}
+
 \end{document}
